@@ -14,7 +14,7 @@ const useData = () => useContext(DataContext);
 const DataProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/api/videos");
+      const res = await axios.get("http://localhost:5000/api/videos");
       dataDispatch({ type: "ORIGINAL", payload: res?.data?.videos });
     })();
   }, []);

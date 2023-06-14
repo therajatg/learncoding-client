@@ -25,7 +25,8 @@ export function Navbar() {
 
   useEffect(() => {
     (async () => {
-      const res1 = await axios.get("/api/categories");
+      const res1 = await axios.get("http://localhost:5000/api/categories");
+      console.log("res1", res1);
       setCategories(res1.data.categories);
     })();
   }, []);
@@ -76,7 +77,7 @@ export function Navbar() {
               <p>Categories</p>
             </li>
             {hamburgerCategory &&
-              categories.map((category) => (
+              categories?.map((category) => (
                 <li
                   value={category.categoryName}
                   onClick={(e) => {
@@ -138,7 +139,8 @@ export function Navbar() {
         <Link to="/" className={`${style.option} ${style.dropdown}`}>
           Categories <IoMdArrowDropdown />
           <div className={style.dropdownContent}>
-            {categories.map((category) => (
+            {console.log("categories", categories)}
+            {categories?.map((category) => (
               <option
                 value={category.categoryName}
                 onClick={(e) =>

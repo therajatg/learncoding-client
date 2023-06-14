@@ -19,17 +19,34 @@ export function Signup() {
   async function signupHandler(e) {
     e.preventDefault();
     try {
-      let res;
-      dummy === true
-        ? (res = await axios.post("/api/auth/login", detail))
-        : (res = await axios.post("/api/auth/signup", detail));
-      localStorage.setItem("token", res.data.encodedToken);
-      authDispatch({ type: "TOKEN", payload: res.data.encodedToken });
-      toast.success("Signup Successful");
-      navigate("/");
-    } catch (err) {
-      toast.error(`${err.response.status} Error. Please try again!`);
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        detail
+      );
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 400) {
+        toast.error(
+          `${error.response.status} Error. ${error.response.data.message}`
+        );
+      } else {
+        toast.error(`${error.response.status} Error. Please try again!`);
+      }
     }
+
+    // try {
+    //   let res;
+    //   dummy === true
+    //     ? (res = await axios.post("/api/auth/login", detail))
+    //     : (res = await axios.post("/api/auth/signup", detail));
+    //   localStorage.setItem("token", res.data.encodedToken);
+    //   authDispatch({ type: "TOKEN", payload: res.data.encodedToken });
+    //   toast.success("Signup Successful");
+    //   navigate("/");
+    // } catch (err) {
+    //   toast.error(`${err.response.status} Error. Please try again!`);
+    // }
   }
 
   return (
