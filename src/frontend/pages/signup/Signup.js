@@ -23,7 +23,9 @@ export function Signup() {
         "http://localhost:5000/api/auth/signup",
         detail
       );
+      console.log("res from signup", res.data);
       toast.success(res.message);
+      navigate("/");
     } catch (error) {
       console.log(error.response);
       if (error.response.status === 400) {

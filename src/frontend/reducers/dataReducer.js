@@ -1,6 +1,7 @@
 function dataReducer(state, action) {
   switch (action.type) {
     case "HISTORY":
+      console.log("history faya reducer", action.payload);
       return { ...state, historyData: action.payload };
     case "WATCH_LATER":
       return { ...state, watchLaterData: action.payload };

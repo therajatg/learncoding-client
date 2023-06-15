@@ -14,14 +14,18 @@ import {
 } from "./pages/index";
 import Mockman from "mockman-js";
 import { RequiresAuth } from "./RequiresAuth";
+import { useAuth } from "./contexts/authContext";
+import { Navigate } from "react-router-dom";
 
 export function Router() {
+  const { authState } = useAuth();
+  const { token } = authState;
   return (
     <Routes>
       <Route path="*" element={<PageNotFound />} />
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={token ? <Navigate to="/" /> : <Login />} />
       <Route path="/test-api" element={<Mockman />} />
       <Route
         path="/history"

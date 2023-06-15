@@ -1,45 +1,39 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const getHistory = async (token, dataDispatch) => {
+const getHistory = async (dataDispatch) => {
   try {
-    const res = await axios.get("/api/user/history", {
-      headers: {
-        authorization: token,
-      },
-    });
+    const res = await axios.get("http://localhost:5000/api/user/history");
+    console.log("histro in calls", res.data.history);
     dataDispatch({ type: "HISTORY", payload: res.data.history });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    toast.error(
+      `${error.response.status} Error. ${error.response.data.message}`
+    );
   }
 };
 
-const addToHistory = async (video, token, dataDispatch) => {
+const addToHistory = async (id, dataDispatch) => {
   try {
-    const res = await axios.post(
-      "/api/user/history",
-      { video },
-      {
-        headers: {
-          authorization: token,
-        },
-      }
+    const res = await axios.post("http://localhost:5000/api/user/history", {
+      videoId: id,
+    });
+  } catch (error) {
+    toast.error(
+      `${error.response.status} Error. ${error.response.data.message}`
     );
-    dataDispatch({ type: "HISTORY", payload: res.data.history });
-  } catch (err) {
-    console.log(err);
   }
 };
 
 const deleteItemFromHistory = async (id, token, dataDispatch) => {
   try {
-    const res = await axios.delete(`/api/user/history/${id}`, {
-      headers: {
-        authorization: token,
-      },
-    });
-    dataDispatch({ type: "HISTORY", payload: res.data.history });
-  } catch (err) {
-    console.log(err);
+    const res = await axios.delete(
+      `http://localhost:5000/api/user/history/${id}`
+    );
+  } catch (error) {
+    toast.error(
+      `${error.response.status} Error. ${error.response.data.message}`
+    );
   }
 };
 

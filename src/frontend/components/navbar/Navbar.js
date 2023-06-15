@@ -12,6 +12,7 @@ import { useAuth, useData } from "../../contexts/index";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export function Navbar() {
   const [categories, setCategories] = useState([]);
@@ -26,7 +27,6 @@ export function Navbar() {
   useEffect(() => {
     (async () => {
       const res1 = await axios.get("http://localhost:5000/api/categories");
-      console.log("res1", res1);
       setCategories(res1.data.categories);
     })();
   }, []);
@@ -37,7 +37,7 @@ export function Navbar() {
 
   const logoutHandler = () => {
     authDispatch({ type: "TOKEN", payload: null });
-    localStorage.removeItem("token");
+    Cookies.remove("jwt");
     toast.success("Logout Successful");
   };
 

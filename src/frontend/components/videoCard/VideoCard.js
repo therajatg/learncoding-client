@@ -37,12 +37,7 @@ export function VideoCard({ videoDetail }) {
           alt="Thumbnail"
           onClick={() => {
             if (token) {
-              if (historyData.find((video) => video._id === _id)) {
-                deleteItemFromHistory(_id, token, dataDispatch);
-                addToHistory(videoDetail, token, dataDispatch);
-              } else {
-                addToHistory(videoDetail, token, dataDispatch);
-              }
+              addToHistory(_id, dataDispatch);
             }
           }}
         />

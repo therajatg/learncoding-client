@@ -21,6 +21,7 @@ export function RelatedVideos({ relatedVideos }) {
           className={style.thumbnail}
           key={relatedVideo._id}
           onClick={() => {
+            //If video already present in history, I'll update the time else will add a new row (with latest time by default)
             if (token) {
               if (historyData.find((video) => video._id === relatedVideo._id)) {
                 deleteItemFromHistory(relatedVideo._id, token, dataDispatch);
