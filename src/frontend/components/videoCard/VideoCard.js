@@ -37,7 +37,7 @@ export function VideoCard({ videoDetail }) {
           alt="Thumbnail"
           onClick={() => {
             if (token) {
-              addToHistory(_id, authDispatch);
+              addToHistory(_id);
             }
           }}
         />
@@ -55,7 +55,7 @@ export function VideoCard({ videoDetail }) {
           ) : (
             <button
               className={style.watchLater}
-              onClick={() => addToWatchLater(videoDetail, token, dataDispatch)}
+              onClick={() => addToWatchLater(_id)}
             >
               <BsFillStopwatchFill />
               Watch Later
@@ -111,11 +111,7 @@ export function VideoCard({ videoDetail }) {
         </button>
 
         {pathname === "/history" && (
-          <button
-            onClick={() =>
-              deleteItemFromHistory(_id, token, dataDispatch, authDispatch)
-            }
-          >
+          <button onClick={() => deleteItemFromHistory(_id, dataDispatch)}>
             Remove From History
           </button>
         )}

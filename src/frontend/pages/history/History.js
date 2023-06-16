@@ -28,7 +28,7 @@ export function History() {
           </div>
           <p
             className={style.clearHistory}
-            onClick={() => deleteAllHistory(token, dataDispatch)}
+            onClick={() => deleteAllHistory(dataDispatch)}
           >
             Clear History
           </p>

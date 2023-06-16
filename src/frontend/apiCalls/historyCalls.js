@@ -27,11 +27,13 @@ const addToHistory = async (id) => {
   }
 };
 
-const deleteItemFromHistory = async (id, token, dataDispatch) => {
+const deleteAllHistory = async (dataDispatch) => {
   try {
     const res = await axios.delete(
-      `http://localhost:5000/api/user/history/${id}`
+      "http://localhost:5000/api/user/history/all"
     );
+    toast.success(res.data.message);
+    dataDispatch({ type: "HISTORY", payload: [] });
   } catch (error) {
     toast.error(
       `${error.response.status} Error. ${error.response.data.message}`
@@ -39,16 +41,17 @@ const deleteItemFromHistory = async (id, token, dataDispatch) => {
   }
 };
 
-const deleteAllHistory = async (token, dataDispatch) => {
+const deleteItemFromHistory = async (id, dataDispatch) => {
   try {
-    const res = await axios.delete("/api/user/history/all", {
-      headers: {
-        authorization: token,
-      },
-    });
+    const res = await axios.delete(
+      `http://localhost:5000/api/user/history/${id}`
+    );
     dataDispatch({ type: "HISTORY", payload: res.data.history });
-  } catch (err) {
-    console.log(err);
+    toast.success("Video successfully deleted");
+  } catch (error) {
+    toast.error(
+      `${error.response.status} Error. ${error.response.data.message}`
+    );
   }
 };
 

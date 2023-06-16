@@ -1,33 +1,20 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const getWatchLater = async (token, dataDispatch) => {
+const getWatchLater = async (dataDispatch) => {
   try {
-    const res = await axios.get("/api/user/watchlater", {
-      headers: {
-        authorization: token,
-      },
-    });
+    const res = await axios.get("http://localhost:5000/api/user/watchlater");
     dataDispatch({ type: "WATCH_LATER", payload: res.data.watchlater });
   } catch (err) {
     console.log(err);
   }
 };
 
-const addToWatchLater = async (video, token, dataDispatch) => {
+const addToWatchLater = async (id) => {
   try {
-    const res = await axios.post(
-      "/api/user/watchlater",
-      {
-        video,
-      },
-      {
-        headers: {
-          authorization: token,
-        },
-      }
-    );
-    dataDispatch({ type: "WATCH_LATER", payload: res.data.watchlater });
+    const res = await axios.post("http://localhost:5000/api/user/watchlater", {
+      videoId: id,
+    });
     toast.success("Video added to watch later");
   } catch (err) {
     console.log(err);
