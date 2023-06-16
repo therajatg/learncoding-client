@@ -2,8 +2,7 @@ import style from "./signup.module.css";
 import { useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { signupHandler } from "../../apiCalls";
 
 export function Signup() {
   const { authState, authDispatch } = useAuth();
@@ -16,44 +15,12 @@ export function Signup() {
   const [dummy, setDummy] = useState(false);
   const navigate = useNavigate();
 
-  async function signupHandler(e) {
-    e.preventDefault();
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        detail
-      );
-      console.log("res from signup", res.data);
-      toast.success(res.message);
-      navigate("/");
-    } catch (error) {
-      console.log(error.response);
-      if (error.response.status === 400) {
-        toast.error(
-          `${error.response.status} Error. ${error.response.data.message}`
-        );
-      } else {
-        toast.error(`${error.response.status} Error. Please try again!`);
-      }
-    }
-
-    // try {
-    //   let res;
-    //   dummy === true
-    //     ? (res = await axios.post("/api/auth/login", detail))
-    //     : (res = await axios.post("/api/auth/signup", detail));
-    //   localStorage.setItem("token", res.data.encodedToken);
-    //   authDispatch({ type: "TOKEN", payload: res.data.encodedToken });
-    //   toast.success("Signup Successful");
-    //   navigate("/");
-    // } catch (err) {
-    //   toast.error(`${err.response.status} Error. Please try again!`);
-    // }
-  }
-
   return (
     <div className={style.signupPage}>
-      <form className={style.form} onSubmit={signupHandler}>
+      <form
+        className={style.form}
+        onSubmit={(e) => signupHandler(e, detail, navigate)}
+      >
         <p className={style.title}>Welcome to code2BUILD</p>
 
         <div className={style.name}>

@@ -13,6 +13,7 @@ export function RelatedVideos({ relatedVideos }) {
   const { likedData, watchLaterData, historyData } = dataState;
   const [modal, setModal] = useState(false);
 
+  console.log("related", relatedVideos);
   return (
     <div className={style.relatedVideos}>
       {relatedVideos.map((relatedVideo) => (
@@ -21,14 +22,8 @@ export function RelatedVideos({ relatedVideos }) {
           className={style.thumbnail}
           key={relatedVideo._id}
           onClick={() => {
-            //If video already present in history, I'll update the time else will add a new row (with latest time by default)
             if (token) {
-              if (historyData.find((video) => video._id === relatedVideo._id)) {
-                deleteItemFromHistory(relatedVideo._id, token, dataDispatch);
-                addToHistory(relatedVideo, token, dataDispatch);
-              } else {
-                addToHistory(relatedVideo, token, dataDispatch);
-              }
+              addToHistory(relatedVideo._id);
             }
           }}
         >

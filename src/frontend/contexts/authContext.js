@@ -17,7 +17,6 @@ function AuthProvider({ children }) {
   });
 
   useEffect(() => {
-    console.log("sdfecwecwef");
     const jwtToken = Cookies.get("jwt");
     authDispatch({ type: "TOKEN", payload: jwtToken });
   }, []);

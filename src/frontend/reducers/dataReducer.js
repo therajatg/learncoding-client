@@ -24,12 +24,12 @@ function dataReducer(state, action) {
         ),
       };
     case "CATEGORY":
-      console.log(action.payload);
+      console.log("ori", state.originalData);
+      console.log("paylo", action.payload);
       return {
         ...state,
         filteredData: state.originalData.filter(
-          (video) =>
-            video.category.toLowerCase() === action.payload.toLowerCase()
+          (video) => video.category_id == action.payload
         ),
       };
     case "ORIGINAL":

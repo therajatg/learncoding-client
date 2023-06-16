@@ -25,21 +25,17 @@ export function PlayVideo() {
   const { videoId } = useParams();
   const [clickedVideo, setClickedVideo] = useState({});
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const [allVideos, setAllVideos] = useState([]);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const res1 = await axios.get(`/api/video/${videoId}`);
-      setClickedVideo(res1.data.video);
-      const res2 = await axios.get("/api/videos");
-      setAllVideos(res2.data.videos);
-      setRelatedVideos(filterVideos);
+      const res = await axios.get(
+        `http://localhost:5000/api/videos/${videoId}`
+      );
+      setClickedVideo(res.data.selectedVideo);
+      setRelatedVideos(res.data.relatedVideos);
     })();
-  }, [clickedVideo]);
-  const filterVideos = allVideos.filter(
-    (video) => video.category === clickedVideo.category
-  );
+  }, []);
 
   const isPresentInWatchLater = watchLaterData.find(
     (video) => video._id === clickedVideo._id

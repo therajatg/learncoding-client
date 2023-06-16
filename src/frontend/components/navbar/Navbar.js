@@ -12,7 +12,7 @@ import { useAuth, useData } from "../../contexts/index";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { logoutHandler } from "../../apiCalls";
 
 export function Navbar() {
   const [categories, setCategories] = useState([]);
@@ -25,6 +25,7 @@ export function Navbar() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    authDispatch({ type: "TOKEN", payload: "edxd2" });
     (async () => {
       const res1 = await axios.get("http://localhost:5000/api/categories");
       setCategories(res1.data.categories);
@@ -33,12 +34,6 @@ export function Navbar() {
 
   const loginHandler = () => {
     navigate("/login");
-  };
-
-  const logoutHandler = () => {
-    authDispatch({ type: "TOKEN", payload: null });
-    Cookies.remove("jwt");
-    toast.success("Logout Successful");
   };
 
   return (
@@ -79,19 +74,19 @@ export function Navbar() {
             {hamburgerCategory &&
               categories?.map((category) => (
                 <li
-                  value={category.categoryName}
+                  value={category.id}
                   onClick={(e) => {
                     navigate("/");
                     e.target.innerText &&
                       dataDispatch({
                         type: "CATEGORY",
-                        payload: e.target.innerText,
+                        payload: category._id,
                       });
                   }}
                   key={category._id}
                 >
                   <BsFillFilePlayFill />
-                  <p>{category.categoryName}</p>
+                  <p>{category.categoryname}</p>
                 </li>
               ))}
           </ul>
@@ -139,19 +134,18 @@ export function Navbar() {
         <Link to="/" className={`${style.option} ${style.dropdown}`}>
           Categories <IoMdArrowDropdown />
           <div className={style.dropdownContent}>
-            {console.log("categories", categories)}
             {categories?.map((category) => (
               <option
-                value={category.categoryName}
+                value={category.categoryname}
                 onClick={(e) =>
                   dataDispatch({
                     type: "CATEGORY",
-                    payload: e.target.value,
+                    payload: category._id,
                   })
                 }
                 key={category._id}
               >
-                {category.categoryName}
+                {category.categoryname}
               </option>
             ))}
           </div>
@@ -173,7 +167,10 @@ export function Navbar() {
           <AiOutlineSearch className={style.searchIcon} />
         </div>
         {token && (
-          <button onClick={logoutHandler} className={style.login}>
+          <button
+            onClick={() => logoutHandler(authDispatch, navigate)}
+            className={style.login}
+          >
             Logout
           </button>
         )}

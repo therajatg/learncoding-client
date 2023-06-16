@@ -20,7 +20,7 @@ import { PlaylistModal } from "../index";
 
 export function VideoCard({ videoDetail }) {
   const { playlistId } = useParams();
-  const { authState } = useAuth();
+  const { authState, authDispatch } = useAuth();
   const { token } = authState;
   const { dataState, dataDispatch } = useData();
   const { watchLaterData, likedData, historyData } = dataState;
@@ -37,7 +37,7 @@ export function VideoCard({ videoDetail }) {
           alt="Thumbnail"
           onClick={() => {
             if (token) {
-              addToHistory(_id, dataDispatch);
+              addToHistory(_id, authDispatch);
             }
           }}
         />
@@ -112,7 +112,9 @@ export function VideoCard({ videoDetail }) {
 
         {pathname === "/history" && (
           <button
-            onClick={() => deleteItemFromHistory(_id, token, dataDispatch)}
+            onClick={() =>
+              deleteItemFromHistory(_id, token, dataDispatch, authDispatch)
+            }
           >
             Remove From History
           </button>

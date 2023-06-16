@@ -7,11 +7,11 @@ import style from "./history.module.css";
 export function History() {
   const { dataState, dataDispatch } = useData();
   const { historyData } = dataState;
-  const { authState } = useAuth();
+  const { authState, authDispatch } = useAuth();
   const { token } = authState;
 
   useEffect(() => {
-    getHistory(dataDispatch);
+    getHistory(dataDispatch, authDispatch);
   }, []);
 
   console.log("historyData", dataState);

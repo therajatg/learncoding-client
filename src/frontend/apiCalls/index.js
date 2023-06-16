@@ -18,3 +18,5 @@ export {
   deletePlaylist,
   deleteVideoFromPlaylist,
 } from "./playlistCalls";
+
+export { signupHandler, loginHandler, logoutHandler } from "./authCalls";
