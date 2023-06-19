@@ -1,14 +1,21 @@
-import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "../axios";
 
-async function signupHandler(e, detail, navigate) {
+async function signupHandler(e, detail, navigate, authDispatch) {
   e.preventDefault();
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/signup",
-      detail
-    );
-    toast.success(res.data.message);
+    const res = await axios.post("/api/auth/signup", detail, {
+      withCredentials: true,
+    });
+    authDispatch({
+      type: "FIRST_NAME",
+      payload: res.data?.firstName,
+    });
+    authDispatch({
+      type: "ACCESS_TOKEN",
+      payload: res.data?.accessToken,
+    });
+    toast.success("Registration Successful");
     navigate("/");
   } catch (error) {
     if (error.response.status === 400) {
@@ -24,12 +31,18 @@ async function signupHandler(e, detail, navigate) {
 async function loginHandler(e, detail, navigate, authDispatch) {
   e.preventDefault();
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      detail
-    );
-    // authDispatch({ type: "TOKEN" });
-    toast.success(res.data.message);
+    const res = await axios.post("/api/auth/login", detail, {
+      withCredentials: true,
+    });
+    authDispatch({
+      type: "FIRST_NAME",
+      payload: res.data?.firstName,
+    });
+    authDispatch({
+      type: "ACCESS_TOKEN",
+      payload: res.data?.accessToken,
+    });
+    toast.success("Login Successful");
     navigate("/");
   } catch (error) {
     if (error.response.status === 400) {
@@ -44,8 +57,17 @@ async function loginHandler(e, detail, navigate, authDispatch) {
 
 const logoutHandler = async (authDispatch, navigate) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/logout");
-    authDispatch({ type: "TOKEN", payload: null });
+    const res = await axios.post("/api/auth/logout", {
+      withCredentials: true,
+    });
+    authDispatch({
+      type: "FIRST_NAME",
+      payload: null,
+    });
+    authDispatch({
+      type: "ACCESS_TOKEN",
+      payload: null,
+    });
     toast.success("Logout Successful");
     navigate("/");
   } catch (error) {

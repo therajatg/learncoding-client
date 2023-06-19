@@ -1,9 +1,9 @@
 function dataReducer(state, action) {
   switch (action.type) {
     case "HISTORY":
-      console.log("history faya reducer", action.payload);
       return { ...state, historyData: action.payload };
     case "WATCH_LATER":
+      console.log("payload", action.payload);
       return { ...state, watchLaterData: action.payload };
     case "LIKED":
       return { ...state, likedData: action.payload };
@@ -24,8 +24,6 @@ function dataReducer(state, action) {
         ),
       };
     case "CATEGORY":
-      console.log("ori", state.originalData);
-      console.log("paylo", action.payload);
       return {
         ...state,
         filteredData: state.originalData.filter(

@@ -17,6 +17,7 @@ import {
 
 import { useAuth } from "../../contexts/authContext";
 import { PlaylistModal } from "../index";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export function VideoCard({ videoDetail }) {
   const { playlistId } = useParams();
@@ -28,6 +29,7 @@ export function VideoCard({ videoDetail }) {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   return (
     <div className={modal ? style.videoCardWithoutHover : style.videoCard}>
@@ -37,17 +39,18 @@ export function VideoCard({ videoDetail }) {
           alt="Thumbnail"
           onClick={() => {
             if (token) {
-              addToHistory(_id);
+              addToHistory(_id, axiosPrivate);
             }
           }}
         />
       </Link>
       <div className={style.videoAction}>
+        {console.log(watchLaterData, _id)}
         {token ? (
-          watchLaterData.find((video) => video._id === _id) ? (
+          watchLaterData?.find((video) => video.video_id == _id) ? (
             <button
               className={style.watchLater}
-              onClick={() => deleteFromWatchLater(_id, token, dataDispatch)}
+              onClick={() => deleteFromWatchLater(_id, dataDispatch)}
             >
               <BsFillStopwatchFill />
               Remove From Watch Later
@@ -55,7 +58,7 @@ export function VideoCard({ videoDetail }) {
           ) : (
             <button
               className={style.watchLater}
-              onClick={() => addToWatchLater(_id)}
+              onClick={() => addToWatchLater(_id, dataDispatch)}
             >
               <BsFillStopwatchFill />
               Watch Later
@@ -111,7 +114,11 @@ export function VideoCard({ videoDetail }) {
         </button>
 
         {pathname === "/history" && (
-          <button onClick={() => deleteItemFromHistory(_id, dataDispatch)}>
+          <button
+            onClick={() =>
+              deleteItemFromHistory(_id, dataDispatch, axiosPrivate)
+            }
+          >
             Remove From History
           </button>
         )}

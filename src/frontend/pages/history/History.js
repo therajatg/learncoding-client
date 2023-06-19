@@ -3,18 +3,18 @@ import { getHistory, deleteAllHistory } from "../../apiCalls/index";
 import { useData, useAuth } from "../../contexts/index";
 import { Navbar, NoVideo, VideoCard } from "../../components/index";
 import style from "./history.module.css";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export function History() {
   const { dataState, dataDispatch } = useData();
   const { historyData } = dataState;
   const { authState, authDispatch } = useAuth();
   const { token } = authState;
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    getHistory(dataDispatch, authDispatch);
+    getHistory(dataDispatch, authDispatch, axiosPrivate);
   }, []);
-
-  console.log("historyData", dataState);
 
   return (
     <div>
@@ -28,7 +28,7 @@ export function History() {
           </div>
           <p
             className={style.clearHistory}
-            onClick={() => deleteAllHistory(dataDispatch)}
+            onClick={() => deleteAllHistory(dataDispatch, axiosPrivate)}
           >
             Clear History
           </p>

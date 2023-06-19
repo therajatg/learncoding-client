@@ -8,17 +8,15 @@ import style from "./watchLater.module.css";
 export function WatchLater() {
   const { dataState, dataDispatch } = useData();
   const { watchLaterData } = dataState;
-  const { authState } = useAuth();
-  const { token } = authState;
 
   useEffect(() => {
-    getWatchLater(token, dataDispatch);
+    getWatchLater(dataDispatch);
   }, []);
 
   return (
     <div>
       <Navbar />
-      {watchLaterData.length > 0 ? (
+      {watchLaterData?.length > 0 ? (
         <div className={style.main}>
           {watchLaterData.map((video) => (
             <VideoCard videoDetail={video} key={video._id} />

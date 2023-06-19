@@ -11,13 +11,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth, useData } from "../../contexts/index";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { logoutHandler } from "../../apiCalls";
+import axios from "../../axios";
 
 export function Navbar() {
   const [categories, setCategories] = useState([]);
   const { authState, authDispatch } = useAuth();
-  const { token } = authState;
+  const { accessToken } = authState;
   const { dataDispatch } = useData();
   const [menu, setMenu] = useState(false);
   const [hamburgerCategory, setHamburgerCategory] = useState(false);
@@ -25,9 +25,8 @@ export function Navbar() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    authDispatch({ type: "TOKEN", payload: "edxd2" });
     (async () => {
-      const res1 = await axios.get("http://localhost:5000/api/categories");
+      const res1 = await axios.get("/api/categories");
       setCategories(res1.data.categories);
     })();
   }, []);
@@ -166,7 +165,7 @@ export function Navbar() {
           />
           <AiOutlineSearch className={style.searchIcon} />
         </div>
-        {token && (
+        {accessToken && (
           <button
             onClick={() => logoutHandler(authDispatch, navigate)}
             className={style.login}
@@ -174,7 +173,7 @@ export function Navbar() {
             Logout
           </button>
         )}
-        {!token && (
+        {!accessToken && (
           <button onClick={loginHandler} className={style.login}>
             Login
           </button>

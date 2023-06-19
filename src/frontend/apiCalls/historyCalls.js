@@ -1,13 +1,14 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const getHistory = async (dataDispatch, authDispatch) => {
+const getHistory = async (dataDispatch, authDispatch, axiosPrivate) => {
   try {
-    const res = await axios.get("http://localhost:5000/api/user/history");
+    const res = await axiosPrivate.get("/api/user/history");
     dataDispatch({ type: "HISTORY", payload: res.data.history });
   } catch (error) {
-    if (error.response.status === 401) {
-      authDispatch({ type: "TOKEN", payload: null });
+    if (error.response.status === 403) {
+      authDispatch({ type: "ACCESS_TOKEN", payload: null });
     }
     toast.error(
       `${error.response.status} Error. ${error.response.data.message}`
@@ -15,9 +16,9 @@ const getHistory = async (dataDispatch, authDispatch) => {
   }
 };
 
-const addToHistory = async (id) => {
+const addToHistory = async (id, axiosPrivate) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/user/history", {
+    const res = await axiosPrivate.post("/api/user/history", {
       videoId: id,
     });
   } catch (error) {
@@ -27,11 +28,9 @@ const addToHistory = async (id) => {
   }
 };
 
-const deleteAllHistory = async (dataDispatch) => {
+const deleteAllHistory = async (dataDispatch, axiosPrivate) => {
   try {
-    const res = await axios.delete(
-      "http://localhost:5000/api/user/history/all"
-    );
+    const res = await axiosPrivate.delete("/api/user/history/all");
     toast.success(res.data.message);
     dataDispatch({ type: "HISTORY", payload: [] });
   } catch (error) {
@@ -41,11 +40,9 @@ const deleteAllHistory = async (dataDispatch) => {
   }
 };
 
-const deleteItemFromHistory = async (id, dataDispatch) => {
+const deleteItemFromHistory = async (id, dataDispatch, axiosPrivate) => {
   try {
-    const res = await axios.delete(
-      `http://localhost:5000/api/user/history/${id}`
-    );
+    const res = await axiosPrivate.delete(`/api/user/history/${id}`);
     dataDispatch({ type: "HISTORY", payload: res.data.history });
     toast.success("Video successfully deleted");
   } catch (error) {

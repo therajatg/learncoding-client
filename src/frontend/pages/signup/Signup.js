@@ -19,7 +19,7 @@ export function Signup() {
     <div className={style.signupPage}>
       <form
         className={style.form}
-        onSubmit={(e) => signupHandler(e, detail, navigate)}
+        onSubmit={(e) => signupHandler(e, detail, navigate, authDispatch)}
       >
         <p className={style.title}>Welcome to code2BUILD</p>
 

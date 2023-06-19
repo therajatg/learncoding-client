@@ -14,8 +14,11 @@ const useData = () => useContext(DataContext);
 const DataProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
-      const res = await axios.get("http://localhost:5000/api/videos");
-      dataDispatch({ type: "ORIGINAL", payload: res?.data?.videos });
+      const res1 = await axios.get("http://localhost:5000/api/videos");
+      dataDispatch({ type: "ORIGINAL", payload: res1?.data?.videos });
+
+      const res2 = await axios.get("http://localhost:5000/api/user/watchLater");
+      dataDispatch({ type: "WATCH_LATER", payload: res2?.data?.watchlater });
     })();
   }, []);
 
